@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container cats">
+   <div class="row">
+      <div class="col-lg-3 col-12 sidebar">
+         {% include "header_2.html" %}
+         {{ modules|raw }}
+      </div>
+      <div class="col-lg-9 col-12 mainbar mt-lg-0 mt-2">
+         <div class="cat-info p-4 mb-2 position-relative">
+            <h4 class="mb-2">{{ category.name }}</h4>
+            {% if category.description != "" %}
+            {{ category.description|raw }}
+            {% endif %}
+         </div>
+         {% if category.displayType == "list" %}
+         <div class="list-packages p-4 pt-3 position-relative">
+            {% for package in category.packages %}
+            <div class="package d-flex justify-content-between align-items-center p-3 mt-2">
+               <div class="text d-flex flex-column justify-content-center align-items-start">
+                  <span class="big name">{{ package.name }} {% if package.countdownEnds %}<span class="text-danger">&nbsp;&nbsp;<i
+                     class="fa fa-clock-o"></i> <br /><span class="countdown-to badge px-0" data-countdown="{{ package.countdownEnds }}">{{
+                  __("Ending Soon!") }}</span></span>{% endif %}</span>
+                  {% if package.customPrice == false and package.price > 0 %}
+                  <strong class="h4 price">
+                  {% if package.discount.applied %}
+                  <del class="text-danger small font-weight-bold">{{ package.discount.original|money }}</del>
+                  {% endif %}
+                  {{ package.price|money }} <small>{{ basket.currency }}</small>
+                  </strong>
+                  {% endif %}
+               </div>
+               <div class="btn-holder d-flex justify-content-center align-items-center">
+                  <a href="javascript:void(0);" data-remote="/package/{{ package.id }}"
+                     class="btn btn-info toggle-modal me-2 drop-shadow"><i class="fa-solid fa-info"></i></a>
+                  {% if package.basket %}
+                  <a href="/checkout/packages/remove/{{ package.id }}"
+                     class="btn btn--remove cursorAura drop-shadow d-flex justify-content-center align-items-center"><i class="fa-solid fa-trash-can-arrow-up me-1"></i>Remove</a>
+                  {% else %}
+                  <a href="/checkout/packages/add/{{ package.id }}"
+                     class="btn btn--add cursorAura drop-shadow d-flex justify-content-center align-items-center"><i class="fa-solid fa-cart-plus me-1"></i>Add to cart</a>
+                  {% endif %}   
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         {% else %}
+         <div class="grid-packages p-4 position-relative">
+            {% for package in category.packages %}
+            <div class="package w-100 drop-shadow" id="package--{{ package.id }}">
+               <a class="package-img toggle-modal toggle-tooltip " href="javascript:void(0);" data-remote="/package/{{ package.id }}" title="{{ __("Click for more details") }}">
+               <img src="{{ package.image.url }}" class="drop-shadow" alt="{{package.name}}" >
+               </a>
+               <div class="package-info mt-2">
+                  <span class="package-name">{{package.name[:20] }}</span>
+                  <div class="package-price">
+                     {% if package.discount.applied %}
+                     <del class="text-danger small font-weight-bold discount">
+                     {{ package.discount.original|money }}
+                     </del>
+                     {% endif %}
+                     <span class="price-actual">{{ package.price|money }} <small>{{ basket.currency }}</small></span>
+                  </div>
+                  <div class="package-buttons d-flex justify-content-center align-items-center">
+                     <a href="javascript:void(0);" data-remote="/package/{{ package.id }}"
+                        class="btn btn-info toggle-modal drop-shadow"><i class="fa-solid fa-info"></i></a>
+                     {% if package.basket %}
+                     <a href="/checkout/packages/remove/{{ package.id }}"
+                        class="btn btn--remove cursorAura drop-shadow d-flex justify-content-center align-items-center"><i class="fa-solid fa-trash-can-arrow-up me-1"></i>Remove</a>
+                     {% else %}
+                     <a href="/checkout/packages/add/{{ package.id }}"
+                        class="btn btn--add cursorAura drop-shadow d-flex justify-content-center align-items-center"><i class="fa-solid fa-cart-plus me-1"></i>Add to cart</a>
+                     {% endif %}                     
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         {% endif %}
+      </div>
+   </div>
+</div>
+{% include "content_footer.html" %}
+{% endblock %}
+{#
+<div class="container login">
+   <div class="row">
+      <div class="col-md-3 col-12 sidebar">
+         {% include "header_2.html" %}
+         {{ modules|raw }}
+      </div>
+      <div class="col-md-9 col-12 mainbar">
+         <div class="login-info p-4 mb-2 position-relative">
+            <h4 class="mb-2">{{ __("Enter username") }}</h4>
+            <p class="mb-2">{{ __("Please enter your username to continue") }}</p>
+            {{ loginform|raw }}
+         </div>
+      </div>
+   </div>
+</div>
+#}

@@ -1,0 +1,38 @@
+
+<div class="p-3 module module-topdonator d-flex">
+    <div class="skin">
+        {% if module.ign %}
+            <img src="https://mc-heads.net/body/{{module.ign}}" class="unselectable drop-shadow" id="topDonatorAvatar" data-username="{{module.ign}}"/>
+        {% else %}
+            <img src="https://mc-heads.net/body/MHF_Steve" class="unselectable drop-shadow" id="topDonatorAvatar"/>
+        {% endif %}
+    </div>
+    <div class="desc d-flex flex-column align-items-start justify-content-center">
+        <h4 class="mb-2"><i class="fa-solid fa-crown me-1"></i>Top Donator</h4>
+        {% if module.ign %}
+            <p class="mb-0"><b>{{ module.ign }}</b>,
+            <span class="text-shadow">
+                {% if module.displayAmount %}
+                    {{ __("donated") }} {{ module.total|money }} <small>{{ store.currency }}</small>
+                {% else %}
+                    {{ __("donated the most ") }}
+                {% endif %}
+                
+                {% if module.period == "hourly" %}
+                    {{ __("this hour.") }}
+                {% elseif module.period == "daily" %}
+                    {{ __("today.") }}
+                {% elseif module.period == "monthly" %}
+                    {{ __("this month.") }}
+                {% elseif module.period == "yearly" %}
+                   {{ __("this year.") }}
+                {% else %}
+                    {{ __("this week.") }}
+                {% endif %}    
+            </span>
+            </p>
+        {% else %}
+            <p class="mb-0">Your name and skin can be here!</p>
+        {% endif %}
+    </div>
+</div>

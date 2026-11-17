@@ -1,0 +1,115 @@
+<!-- Header 1 -->
+<header class="container position-relative">
+   <div class="line-1 d-flex justify-content-between align-items-center pt-4">
+      <a href="/" class="header-top-btn"><i class="fa-solid fa-arrow-left me-1 d-none d-sm-inline-block"></i> Main Site</a>
+      <div class="d-flex justify-content-center align-items-center">
+         <div class="dropdown curr me-2">
+            <button class="header-top-btn dropdown-toggle" type="button" id="currencyButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ basket.currency }}
+            </button>
+            <div class="dropdown-menu currency-dropdown-menu" aria-labelledby="currencyButton">
+               {% for currency in store.currencies %}
+               {% if currency.code in [store.currency, "AUD", "BRL", "CAD", "DKK", "EUR", "NOK", "NZD", "GBP", "SEK", "USD", "PLN"] %}
+               <li><a class="dropdown-item  {% if basket.currency==currency.code %}active {% endif %}>" href="?currency={{ currency.code }}">{{ currency.code }}</a></li>
+               {% endif %}
+               {% endfor %}
+            </div>
+         </div>
+         {% if basket.username %}
+	<a class="header-top-btn login-btn d-flex justify-content-center align-items-center mx-2" href="/checkout/logout">
+             <div class="text-end">
+               <p class="big mb-0">Logout</p>
+            </div>
+         </a>
+         <a class="header-top-btn login-btn d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#basketModal">
+            <div class="text-end me-2">
+               <p class="big mb-1">Welcome, {{basket.ign}}</p>
+               <p class="sml mb-0">Cart ({{basket.packages|length }}) - <span>{{ basket.price|money }}</span> {{ basket.currency }}</p>
+            </div>
+            <img src="https://mc-heads.net/avatar/{{basket.ign}}/32">
+         </a>
+         {% else %}
+         <a class="header-top-btn login-btn d-flex justify-content-center align-items-center" href="/login">
+            <div class="text-end me-2">
+               <p class="big mb-1">Guest</p>
+               <p class="sml mb-0">CLICK TO LOGIN</p>
+            </div>
+            <img src="https://mc-heads.net/avatar/MHF_Steve/32">
+         </a>
+         {% endif %}
+      </div>
+   </div>
+   <div class="line-2 mt-5 pb-4">
+      <button id="ip-copy" class="d-flex justify-content-center align-items-center">
+         <i class="fa-solid fa-circle-play"></i>
+         <div class="text ms-3">
+            <p class="mb-1 server-ip" id="server-ip">{{server}}</p>
+            <p class="mb-0 server-counter d-md-block d-none">JOIN <span id="server-counter">0</span> OTHER PLAYERS</p>
+            <p class="mb-0 server-counter d-block d-md-none"><span id="server-counter-2">0</span> PLAYERS</p>
+         </div>
+      </button>
+      <a class="logo-holder" href="/">
+      <img src="{{ store.logo }}" alt="{{store.name}}"/>
+      </a>
+      <a id="discord-copy" class="d-flex justify-content-center align-items-center" href="{{discordLink}}" target="_blank">
+         <div class="text text-end me-3">
+            <p class="mb-1 discord-ip" id="discord-ip">{{discord}}</p>
+            <p class="mb-0 discord-counter d-md-block d-none">JOIN <span id="discord-counter">0</span> OTHER PEOPLE</p>
+            <p class="mb-0 discord-counter d-block d-md-none"><span id="discord-counter-2">0</span> PEOPLE</p>
+         </div>
+         <i class="fa-brands fa-discord"></i>
+      </a>
+   </div>
+</header>
+<div class="modal fade" id="basketModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+         <div class="modal-header d-flex justify-content-between align-items-center p-3">
+            <div class="d-flex justify-content-center align-items-center">
+               <img src="https://mc-heads.net/avatar/{{basket.ign}}/48" class="me-2 drop-shadow">
+               <div class="info d-flex justify-content-center align-items-start flex-column">
+                  <span class="sml">BASKET OF</span>
+                  <span class="big">{{basket.ign}}</span>
+               </div>
+            </div>
+            <div class="btn-holders">
+               <a class="btn btn-secondary dropdown-toggle curr-btn me-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{ basket.currency }}
+               </a>
+               <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  {% for currency in store.currencies %}
+                  {% if currency.code in [store.currency, "AUD", "BRL", "CAD", "DKK", "EUR", "NOK", "NZD", "GBP", "SEK", "USD", "PLN"] %}
+                  <a class="dropdown-item  {% if basket.currency==currency.code %}active {% endif %}>" href="?currency={{ currency.code }}">{{ currency.code }}</a>
+                  {% endif %}
+                  {% endfor %}
+               </div>
+               <strong class="total btn">{{basket.price|money }} <small>{{ basket.currency }}</small></strong>
+            </div>
+         </div>
+         <div class="modal-body p-3 d-flex flex-column align-items-center justify-content-center">
+            {% if basket.packages|length > 0 %}
+            <div class="packages-holder w-100">
+               {% for package in basket.packages %}
+               <div class="package w-100 mb-2 d-flex justify-content-between align-items-center p-3">
+                  <div class="pack-info d-flex flex-column justify-content-center align-items-start">
+                     <span class="big mb-1"><small>{{ package.quantity }} </small>{{ package.name[:25] }}</span>
+                     {% if package.disableQuantity %}
+                     <span class="sml">{{ package.price|money }} <small>{{ basket.currency }}</small></span>
+                     {% else %}
+               <span class="sml">{{ package.quantity * package.price|money }} <small>{{ basket.currency }}</small></span>
+               {% endif %}
+                  </div>
+                  <div class="package-buttons d-flex justify-content-center align-items-center">
+                     <a href="javascript:void(0);" data-remote="/package/{{ package.id }}"
+                        class="btn btn-info toggle-modal drop-shadow"><i class="fa-solid fa-info"></i></a>
+                     <a href="/checkout/packages/remove/{{ package.id }}" class="btn btn--remove cursorAura drop-shadow d-flex justify-content-center align-items-center"><i class="fa-solid fa-trash-can-arrow-up me-1"></i>Remove</a>
+                  </div>
+               </div>
+               {% endfor %}
+            </div>
+            {% endif %}
+            <a href="/checkout/basket" class="btn btn-checkout w-100 mt-1"><i class="fa-solid fa-cash-register me-1"></i>{{__("Checkout") }}</a>
+         </div>
+      </div>
+   </div>
+</div>

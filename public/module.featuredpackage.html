@@ -1,0 +1,20 @@
+
+{% if module.display %}
+
+<a href="javascript:void(0);" data-remote="/package/{{ module.package.id }}" class="module module-feature p-3 toggle-modal toggle-tooltip d-flex align-items-center justify-content-between" title="{{ __("Click for more details") }}">
+    <div class="img-holder p-2 d-flex justify-content">
+        <img src="{{ module.package.image.url }}"/>
+    </div>
+    <div class="info-holder w-100 mx-2 d-flex flex-column justify-content-start">
+        <h4 class="mb-2"><i class="fa-solid fa-star me-1"></i>{{ module.package.name }}</h4>
+        {% if module.package.customPrice == false and module.package.price > 0 %}
+                <strong class="h4 mb-0">
+                    {% if module.package.discount.applied %}
+                    <del class="text-danger small font-weight-bold">{{ module.package.discount.original|money }}</del>
+                    {% endif %}
+                    {{ module.package.price|money }} <small>{{ module.package.currency }}</small>
+                </strong>
+            {% endif %}
+    </div>
+</a>
+{% endif %}
