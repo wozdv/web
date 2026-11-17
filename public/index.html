@@ -13,6 +13,8 @@
       --gold-hover: #d97706;
       --purple-accent: #3b2b52;
       --purple-border: #5b4280;
+      --blue-card: #0284c7;
+      --orange-card: #d97706;
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --border: #2c251d;
@@ -112,7 +114,129 @@
     .action-text small { color: var(--gold); display: block; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
     .action-text span { font-weight: 800; font-size: 0.9rem; }
 
-    /* ── Layout Principal (Sidebar + Content) ── */
+    /* ── Vistas (Tienda Principal vs Pantalla Modalidades) ── */
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* ── Estilos Pantalla "Elige tu Modalidad" ── */
+    .modalities-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .modalities-header h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--text);
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+    .back-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s;
+    }
+    .back-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Banner de Descuento */
+    .discount-banner {
+      background: linear-gradient(90deg, #5b4280 0%, #3b2b52 100%);
+      border: 1px solid #7c5aab;
+      border-radius: 10px;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+    .discount-left { display: flex; align-items: center; gap: 12px; }
+    .discount-badge-box {
+      background: #fff;
+      color: #3b2b52;
+      font-weight: 900;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .discount-timer { display: flex; gap: 6px; }
+    .timer-box {
+      background: rgba(0,0,0,0.3);
+      padding: 4px 8px;
+      border-radius: 4px;
+      text-align: center;
+      min-width: 36px;
+    }
+    .timer-box span { display: block; font-weight: 800; color: #fff; font-size: 0.85rem; }
+    .timer-box small { font-size: 0.55rem; color: var(--text-muted); text-transform: uppercase; }
+
+    /* Cuadrícula de Modalidades */
+    .modalities-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 800px) {
+      .modalities-grid { grid-template-columns: 1fr; }
+    }
+
+    .mod-card-large {
+      background: linear-gradient(135deg, #4c2885 0%, #2e1a53 100%);
+      border: 1px solid #6c3fc5;
+      border-radius: 14px;
+      padding: 28px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 240px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .mod-card-large:hover { transform: translateY(-3px); border-color: var(--gold); }
+
+    .mod-card-side-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .mod-card-small {
+      border-radius: 14px;
+      padding: 22px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 110px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, filter 0.2s;
+    }
+    .mod-card-small:hover { transform: translateY(-2px); filter: brightness(1.1); }
+    .mod-card-small.blue { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); border: 1px solid #38bdf8; }
+    .mod-card-small.orange { background: linear-gradient(135deg, #d97706 0%, #b45309 100%); border: 1px solid #fbbf24; }
+
+    .mod-title { font-size: 1.5rem; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 4px; text-transform: uppercase; }
+    .mod-subtitle { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 700; text-transform: uppercase; }
+    .mod-badge-global {
+      position: absolute; top: 16px; right: 16px;
+      background: #fff; color: #111; font-weight: 900; font-size: 0.7rem;
+      padding: 3px 8px; border-radius: 4px; text-transform: uppercase;
+    }
+
+    /* ── Layout Principal (Sidebar + Content de la Tienda) ── */
     .main-layout {
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -123,7 +247,6 @@
       .main-layout { grid-template-columns: 1fr; }
     }
 
-    /* Sidebar Modificada estilo referencia */
     .sidebar-box {
       background: linear-gradient(135deg, #231934 0%, #14110e 100%);
       border: 1px solid var(--purple-border);
@@ -136,144 +259,57 @@
       gap: 14px;
       transition: transform 0.2s, border-color 0.2s;
     }
-    .sidebar-box:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold);
-    }
+    .sidebar-box:hover { transform: translateY(-2px); border-color: var(--gold); }
     .sidebar-box-icon {
-      font-size: 1.8rem;
-      background: rgba(245, 158, 11, 0.15);
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid var(--gold);
+      font-size: 1.8rem; background: rgba(245, 158, 11, 0.15); padding: 10px; border-radius: 8px; border: 1px solid var(--gold);
     }
     .sidebar-box-text small { color: var(--gold); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; display: block; }
-    .sidebar-box-text span { font-weight: 800; font-size: 0.95srem; color: var(--text); }
+    .sidebar-box-text span { font-weight: 800; font-size: 0.95rem; color: var(--text); }
 
-    .sidebar-title {
-      font-size: 0.8rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      color: var(--gold);
-      margin-bottom: 10px;
-      text-transform: uppercase;
-    }
+    .sidebar-title { font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; color: var(--gold); margin-bottom: 10px; text-transform: uppercase; }
 
     .cat-list {
-      background: var(--bg-panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px;
     }
     .cat-item {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: background 0.15s, color 0.15s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      padding: 14px 18px; border-bottom: 1px solid var(--border); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+      transition: background 0.15s, color 0.15s; display: flex; align-items: center; gap: 10px;
     }
     .cat-item:last-child { border-bottom: none; }
     .cat-item:hover, .cat-item.active { background: rgba(245, 158, 11, 0.08); color: var(--gold); }
 
-    /* Módulos Extra Sidebar (Giftcard & Recent Payments) */
     .side-module {
-      background: var(--bg-panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px;
-      margin-bottom: 20px;
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px;
     }
-    .side-module h4 {
-      font-size: 0.85rem;
-      color: var(--gold);
-      font-weight: 800;
-      margin-bottom: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .side-input-group {
-      display: flex;
-      gap: 6px;
-    }
+    .side-module h4 { font-size: 0.85rem; color: var(--gold); font-weight: 800; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .side-input-group { display: flex; gap: 6px; }
     .side-input-group input {
-      flex: 1;
-      background: var(--bg-body);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 10px;
-      color: var(--text);
-      font-size: 0.85rem;
-      outline: none;
+      flex: 1; background: var(--bg-body); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; color: var(--text); font-size: 0.85rem; outline: none;
     }
     .side-input-group input:focus { border-color: var(--gold); }
 
-    .donators-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
+    .donators-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
     .donator-avatar {
-      width: 100%;
-      aspect-ratio: 1;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
+      width: 100%; aspect-ratio: 1; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
     }
 
-    /* Content Area */
     .content-panel {
-      background: var(--bg-panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 24px;
-      margin-bottom: 20px;
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 20px;
     }
+    .content-panel h2 { font-size: 1.1rem; color: var(--gold); margin-bottom: 8px; font-weight: 800; letter-spacing: 0.5px; }
+    .content-panel p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.5; margin-bottom: 14px; }
 
-    .content-panel h2 {
-      font-size: 1.1rem;
-      color: var(--gold);
-      margin-bottom: 8px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-    .content-panel p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.5;
-      margin-bottom: 14px;
-    }
-
-    /* Meta mensual bar */
     .goal-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
     .goal-bar { background: var(--bg-body); border-radius: 6px; height: 10px; overflow: hidden; border: 1px solid var(--border); }
     .goal-fill { background: var(--gold); width: 0%; height: 100%; transition: width 0.4s; }
 
-    /* Products Grid */
     .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 20px;
     }
-
     .prod-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s, border-color 0.2s;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px;
+      display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, border-color 0.2s;
     }
     .prod-card:hover { transform: translateY(-2px); border-color: var(--gold); }
     .prod-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
@@ -282,54 +318,34 @@
     .prod-price { color: var(--gold); font-weight: 800; font-size: 0.95rem; }
 
     .btn {
-      background: var(--gold);
-      color: #1c1813;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: 800;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: background 0.2s;
+      background: var(--gold); color: #1c1813; border: none; padding: 8px 14px; border-radius: 6px;
+      font-weight: 800; font-size: 0.85rem; cursor: pointer; transition: background 0.2s;
     }
     .btn:hover { background: var(--gold-hover); }
 
-    /* ── Modales ── */
+    /* Modales */
     .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-      display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
     }
     .modal-backdrop.open { display: flex; }
     .modal {
-      background: var(--bg-panel); border: 1px solid var(--border);
-      border-radius: 12px; max-width: 440px; width: 100%; padding: 24px; position: relative;
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; max-width: 440px; width: 100%; padding: 24px; position: relative;
     }
     .modal h3 { color: var(--gold); margin-bottom: 8px; }
     .modal p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
     .modal input {
-      width: 100%; background: var(--bg-body); border: 1px solid var(--border);
-      border-radius: 6px; padding: 10px 14px; color: var(--text); font-size: 0.95rem; margin-bottom: 14px; outline: none;
+      width: 100%; background: var(--bg-body); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; color: var(--text); font-size: 0.95rem; margin-bottom: 14px; outline: none;
     }
     .modal input:focus { border-color: var(--gold); }
     .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
 
-    /* ── Footer ── */
     footer {
-      background: #080705;
-      border-top: 1px solid var(--border);
-      margin-top: auto;
-      padding: 24px 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      line-height: 1.5;
+      background: #080705; border-top: 1px solid var(--border); margin-top: auto; padding: 24px 0; text-align: center; color: var(--text-muted); font-size: 0.78rem; line-height: 1.5;
     }
 
-    /* Toast */
     .toast {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--gold); color: #1c1813; font-weight: 800; padding: 10px 20px;
-      border-radius: 6px; transition: transform 0.3s ease; z-index: 200;
+      background: var(--gold); color: #1c1813; font-weight: 800; padding: 10px 20px; border-radius: 6px; transition: transform 0.3s ease; z-index: 200;
     }
     .toast.show { transform: translateX(-50%) translateY(0); }
   </style>
@@ -366,72 +382,125 @@
       </div>
     </div>
 
-    <!-- Layout Principal -->
-    <div class="main-layout">
-      <!-- Sidebar Estilo Referencia (Selector superior + Categorías + Módulos) -->
-      <div>
-        <!-- Caja Estilo Referencia (Segunda Imagen) -->
-        <div class="sidebar-box" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
-          <div class="sidebar-box-icon">🛒</div>
-          <div class="sidebar-box-text">
-            <small>Click aquí para</small>
-            <span>Seleccionar categoría</span>
+    <!-- VISTA 1: TIENDA PRINCIPAL -->
+    <div id="view-store" class="view-section active">
+      <div class="main-layout">
+        <!-- Sidebar -->
+        <div>
+          <!-- Botón que abre la pantalla de modalidades -->
+          <div class="sidebar-box" onclick="switchView('modalities')">
+            <div class="sidebar-box-icon">🛒</div>
+            <div class="sidebar-box-text">
+              <small>Click aquí para</small>
+              <span>Seleccionar categoría</span>
+            </div>
+          </div>
+
+          <div class="sidebar-title">Categorías</div>
+          <div class="cat-list" id="categories-container">
+            <div class="cat-item active" onclick="filterCategory('all', this)">⚡ Todos los ítems</div>
+            <div class="cat-item" onclick="filterCategory('rank', this)">👑 Rangos VIP</div>
+            <div class="cat-item" onclick="filterCategory('gems', this)">💎 Gemas y Monedas</div>
+            <div class="cat-item" onclick="filterCategory('keys', this)">🗝️ Llaves de Cofres</div>
+          </div>
+
+          <div class="side-module">
+            <h4>Giftcard Balance</h4>
+            <div class="side-input-group">
+              <input type="text" placeholder="Card Number" id="gift-card-input" />
+              <button class="btn" onclick="checkGiftcard()">Check</button>
+            </div>
+          </div>
+
+          <div class="side-module">
+            <h4>Recent Payments</h4>
+            <div class="donators-grid">
+              <div class="donator-avatar">👦</div>
+              <div class="donator-avatar">🧑</div>
+              <div class="donator-avatar">🦊</div>
+              <div class="donator-avatar">🤖</div>
+            </div>
           </div>
         </div>
 
-        <div class="sidebar-title">Categorías</div>
-        <div class="cat-list" id="categories-container">
-          <div class="cat-item active" onclick="filterCategory('all', this)">⚡ Todos los ítems</div>
-          <div class="cat-item" onclick="filterCategory('rank', this)">👑 Rangos VIP</div>
-          <div class="cat-item" onclick="filterCategory('gems', this)">💎 Gemas y Monedas</div>
-          <div class="cat-item" onclick="filterCategory('keys', this)">🗝️ Llaves de Cofres</div>
-        </div>
+        <!-- Contenido -->
+        <div>
+          <div class="content-panel">
+            <div class="goal-header">
+              <span>META MENSUAL</span>
+              <span style="color: var(--gold);">0%</span>
+            </div>
+            <div class="goal-bar"><div class="goal-fill" style="width: 0%;"></div></div>
+          </div>
 
-        <!-- Módulo Giftcard Balance -->
-        <div class="side-module">
-          <h4>Giftcard Balance</h4>
-          <div class="side-input-group">
-            <input type="text" placeholder="Card Number" id="gift-card-input" />
-            <button class="btn" onclick="checkGiftcard()">Check</button>
+          <div class="content-panel">
+            <h2>BIENVENIDO(A) AL SERVIDOR OFICIAL</h2>
+            <h2 style="font-size: 1.3rem; margin-bottom: 12px;">ENERGIMC NETWORK TIENDA</h2>
+            <p>Sé bienvenido a la Tienda Oficial de Energimc Network. Aquí encontrarás rangos, upgrades y utilidades las cuales te ayudarán a avanzar, competir y destacar dentro del servidor.</p>
+          </div>
+
+          <div class="content-panel" id="productos">
+            <h2>PRODUCTOS DISPONIBLES</h2>
+            <div class="products-grid" id="products-container">
+              <!-- Cargados automáticamente -->
+            </div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <!-- Módulo Recent Payments -->
-        <div class="side-module">
-          <h4>Recent Payments</h4>
-          <div class="donators-grid">
-            <div class="donator-avatar">👦</div>
-            <div class="donator-avatar">🧑</div>
-            <div class="donator-avatar">🦊</div>
-            <div class="donator-avatar">🤖</div>
+    <!-- VISTA 2: SELECCIÓN DE MODALIDAD (ESTILO REFERENCIA) -->
+    <div id="view-modalities" class="view-section">
+      <div class="modalities-header">
+        <h2>Elige tu Modalidad</h2>
+        <button class="back-btn" onclick="switchView('store')">← Volver a la tienda</button>
+      </div>
+
+      <!-- Banner de Descuento -->
+      <div class="discount-banner">
+        <div class="discount-left">
+          <div class="discount-badge-box">70% OFF</div>
+          <div style="font-size: 0.88rem; font-weight: 600;">Aprovecha este descuento exclusivo y obtén una rebaja en tu próxima compra.</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <small style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #d8b4fe;">Termina en:</small>
+          <div class="discount-timer">
+            <div class="timer-box"><span id="m-days">13</span><small>Días</small></div>
+            <div class="timer-box"><span id="m-hrs">17</span><small>Hrs</small></div>
+            <div class="timer-box"><span id="m-mins">18</span><small>Mins</small></div>
+            <div class="timer-box"><span id="m-secs">18</span><small>Segs</small></div>
           </div>
         </div>
       </div>
 
-      <!-- Contenido de Bienvenida y Productos -->
-      <div>
-        <div class="content-panel">
-          <div class="goal-header">
-            <span>META MENSUAL</span>
-            <span style="color: var(--gold);">0%</span>
+      <!-- Tarjetas de Modalidades -->
+      <div class="modalities-grid">
+        <!-- Tarjeta Grande Izquierda -->
+        <div class="mod-card-large" onclick="selectModality('global')">
+          <span class="mod-badge-global">Global</span>
+          <div>
+            <div class="mod-title">SPOOK+</div>
+            <div class="mod-subtitle">Click para ver</div>
           </div>
-          <div class="goal-bar"><div class="goal-fill" style="width: 0%;"></div></div>
+          <div style="font-size: 3rem; align-self: flex-end;">👻</div>
         </div>
 
-        <div class="content-panel">
-          <h2>BIENVENIDO(A) AL SERVIDOR OFICIAL</h2>
-          <h2 style="font-size: 1.3rem; margin-bottom: 12px;">ENERGIMC NETWORK TIENDA</h2>
-          <p>Sé bienvenido a la Tienda Oficial de Energimc Network. Aquí encontrarás rangos, upgrades y utilidades las cuales te ayudarán a avanzar, competir y destacar dentro del servidor.</p>
-          
-          <h2 style="font-size: 0.95rem; margin-top: 16px;">¿ERES UN PADRE O TUTOR?</h2>
-          <p>En Energimc Network tenemos un compromiso con la seguridad y bienestar de nuestros jugadores... Si necesita comunicarse con nosotros puede hacerlo mediante nuestro Discord Oficial o correo electrónico.</p>
-        </div>
+        <!-- Tarjetas Pequeñas Derecha -->
+        <div class="mod-card-side-col">
+          <div class="mod-card-small blue" onclick="selectModality('prison')">
+            <div>
+              <div class="mod-title" style="font-size: 1.2rem;">PRISON</div>
+              <div class="mod-subtitle">Click para ver</div>
+            </div>
+            <div style="font-size: 1.8rem; align-self: flex-end;">⛏️</div>
+          </div>
 
-        <!-- Cuadrícula de Productos Dinámicos -->
-        <div class="content-panel" id="productos">
-          <h2>PRODUCTOS DISPONIBLES</h2>
-          <div class="products-grid" id="products-container">
-            <!-- Cargados automáticamente desde /api/products -->
+          <div class="mod-card-small orange" onclick="selectModality('oneblock')">
+            <div>
+              <div class="mod-title" style="font-size: 1.2rem;">ONEBLOCK</div>
+              <div class="mod-subtitle">Click para ver</div>
+            </div>
+            <div style="font-size: 1.8rem; align-self: flex-end;">🌍</div>
           </div>
         </div>
       </div>
@@ -498,11 +567,33 @@
       }
     }
 
+    function switchView(viewName) {
+      document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+      if (viewName === 'modalities') {
+        document.getElementById('view-modalities').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('view-store').classList.add('active');
+      }
+    }
+
+    function selectModality(modName) {
+      switchView('store');
+      // Filtrar productos según la modalidad seleccionada si aplica
+      if (modName === 'global') {
+        renderProducts(allProducts);
+      } else {
+        const filtered = allProducts.filter(p => p.id.toLowerCase().includes(modName) || p.name.toLowerCase().includes(modName));
+        renderProducts(filtered.length ? filtered : allProducts);
+      }
+      document.getElementById('productos').scrollIntoView({ behavior: 'smooth' });
+    }
+
     function renderProducts(list) {
       const container = document.getElementById('products-container');
       container.innerHTML = '';
       if (!list.length) {
-        container.innerHTML = '<p style="color: var(--text-muted);">No hay productos en esta categoría.</p>';
+        container.innerHTML = '<p style="color: var(--text-muted);">No hay productos disponibles en esta sección.</p>';
         return;
       }
       list.forEach(p => {
