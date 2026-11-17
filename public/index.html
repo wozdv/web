@@ -1,282 +1,761 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda Oficial | Servidor Minecraft</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent: #10b981;
-            --accent-hover: #059669;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tienda Oficial | Servidor Minecraft</title>
+  <style>
+    :root {
+      --bg-main: #0e1015;
+      --bg-panel: #161922;
+      --bg-card: #1c202b;
+      --bg-card-tint: linear-gradient(135deg, #132721 0%, #161922 100%);
+      --green: #4ade80;
+      --green-dark: #22c55e;
+      --blue: #38bdf8;
+      --red: #ef4444;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #262b38;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid var(--border);
-            padding: 20px;
-            text-align: center;
-        }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        header h1 {
-            margin: 0;
-            font-size: 1.8rem;
-            color: var(--accent);
-        }
+    .container {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-        header p {
-            margin: 5px 0 0 0;
-            color: var(--text-muted);
-        }
+    /* ── Topbar & Header ── */
+    .topbar {
+      background: #0a0c10;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
-        main {
-            max-width: 1000px;
-            width: 100%;
-            margin: 30px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-            flex: 1;
-        }
+    .topbar .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-        .nick-container {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-left: 18px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green); }
 
-        .nick-container label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
+    .header-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 20px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
 
-        .nick-container input {
-            padding: 10px 15px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: 1px solid var(--border);
-            background-color: #0f172a;
-            color: white;
-            width: 250px;
-            text-align: center;
-        }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: rgba(74, 222, 128, 0.15);
+      border: 1px solid var(--green);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
 
-        .product-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s, border-color 0.2s;
-        }
+    .brand-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #ef4444, #f59e0b, #4ade80, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
 
-        .product-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
+    .brand-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
 
-        .product-card h3 {
-            margin-top: 0;
-            color: var(--text-main);
-        }
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
 
-        .product-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            flex: 1;
-        }
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.15s, opacity 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); opacity: 0.92; }
+    .btn-green { background: var(--green); color: #052e16; }
+    .btn-blue { background: var(--blue); color: #082f49; }
+    .btn-dark { background: var(--bg-card); color: var(--text); border: 1px solid var(--border); }
 
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
+    /* ── Sale Countdown Banner ── */
+    .sale-banner {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 16px;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        .price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--accent);
-        }
+    .sale-badge {
+      background: var(--green);
+      color: #052e16;
+      font-weight: 900;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
 
-        .buy-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
+    .sale-title {
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 1.05rem;
+    }
 
-        .buy-btn:hover {
-            background-color: var(--accent-hover);
-        }
+    .countdown {
+      display: flex;
+      gap: 8px;
+    }
 
-        /* Modal / Checkout Container */
-        #paypal-container {
-            margin-top: 20px;
-            display: none;
-        }
+    .time-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+      min-width: 46px;
+    }
+    .time-box span { display: block; font-weight: 800; color: var(--green); font-size: 0.95rem; }
+    .time-box small { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-    </style>
+    /* ── Realm / Category Selector ── */
+    .section-bar {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin: 22px 0 16px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .cat-card {
+      background: var(--bg-card-tint);
+      border: 1px solid #1f3d33;
+      border-radius: 12px;
+      padding: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cat-card:hover, .cat-card.active {
+      border-color: var(--green);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(74, 222, 128, 0.1);
+    }
+
+    .cat-info h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 4px; }
+    .cat-info span { font-size: 0.8rem; color: var(--green); font-weight: 600; }
+    .cat-icon { font-size: 2.4rem; }
+
+    /* ── Products Grid ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 40px;
+    }
+
+    .prod-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .prod-card:hover {
+      border-color: var(--green);
+      transform: translateY(-3px);
+    }
+
+    .prod-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .prod-img {
+      width: 56px;
+      height: 56px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .prod-title { font-size: 1.05rem; font-weight: 800; }
+    .prod-price { color: var(--green); font-weight: 800; font-size: 0.95rem; margin-top: 2px; }
+    .prod-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.45; margin-bottom: 18px; }
+
+    .prod-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .prod-actions .btn { flex: 1; justify-content: center; padding: 9px 12px; font-size: 0.85rem; }
+
+    /* ── Modals (Login & Checkout) ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      max-width: 480px;
+      width: 100%;
+      padding: 26px;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    .modal h2 { font-size: 1.25rem; margin-bottom: 8px; }
+    .modal p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px; }
+
+    .edition-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(74, 222, 128, 0.08);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .input-group input {
+      flex: 1;
+      background: var(--bg-main);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .input-group input:focus { border-color: var(--green); }
+
+    /* ── Footer ── */
+    footer {
+      background: #0a0c10;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+      padding: 36px 0 24px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+
+    .footer-col h4 { font-size: 1rem; margin-bottom: 8px; }
+    .footer-col p { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5; }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Toast Notification ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--green);
+      color: #052e16;
+      font-weight: 800;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+      z-index: 200;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Tienda del Servidor</h1>
-        <p>¡Apoya al servidor y adquiere rangos o beneficios exclusivos!</p>
-    </header>
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="container">
+      <span>🌐 play.tuservidor.net</span>
+      <div class="nav-links">
+        <a href="#tienda">Inicio</a>
+        <a href="#productos">Productos</a>
+        <a href="#footer">Discord</a>
+      </div>
+    </div>
+  </div>
 
-    <main>
-        <div class="nick-container">
-            <label for="minecraft-nick">Ingresa tu nombre de usuario (Nick) en Minecraft:</label>
-            <input type="text" id="minecraft-nick" placeholder="Ej. Notch" autocomplete="off" />
+  <div class="container" id="tienda">
+    <!-- Header -->
+    <div class="header-box">
+      <div class="brand">
+        <div class="brand-icon">⛏️</div>
+        <div>
+          <div class="brand-title">MI SERVIDOR MC</div>
+          <div class="brand-sub">¡Bienvenido a nuestra tienda oficial!</div>
         </div>
+      </div>
 
-        <div id="products-container" class="products-grid">
-            <!-- Los productos se cargarán dinámicamente aquí -->
+      <div class="header-actions">
+        <button class="btn btn-green" id="login-trigger" onclick="openLoginModal()">
+          👤 Iniciar Sesión
+        </button>
+        <button class="btn btn-blue" onclick="openCheckoutModal()">
+          🛒 <span id="cart-label">Vacío</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sale Banner -->
+    <div class="sale-banner">
+      <div class="sale-badge">50% OFF</div>
+      <div class="sale-title">OFERTA ESPECIAL DE TEMPORADA</div>
+      <div class="countdown">
+        <div class="time-box"><span id="cd-days">03</span><small>Días</small></div>
+        <div class="time-box"><span id="cd-hours">10</span><small>Hrs</small></div>
+        <div class="time-box"><span id="cd-mins">25</span><small>Min</small></div>
+        <div class="time-box"><span id="cd-secs">40</span><small>Seg</small></div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="section-bar">Selecciona una Categoría</div>
+    <div class="categories-grid">
+      <div class="cat-card active" onclick="filterCategory('all', this)">
+        <div class="cat-info">
+          <h3>TODOS LOS ÍTEMS</h3>
+          <span>Clic para ver</span>
         </div>
-
-        <div id="checkout-section" style="margin-top: 40px; text-align: center;">
-            <div id="paypal-button-container"></div>
+        <div class="cat-icon">⚔️</div>
+      </div>
+      <div class="cat-card" onclick="filterCategory('rank', this)">
+        <div class="cat-info">
+          <h3>RANGOS VIP</h3>
+          <span>Clic para ver</span>
         </div>
-    </main>
+        <div class="cat-icon">👑</div>
+      </div>
+      <div class="cat-card" onclick="filterCategory('gems', this)">
+        <div class="cat-info">
+          <h3>GEMAS Y MONEDAS</h3>
+          <span>Clic para ver</span>
+        </div>
+        <div class="cat-icon">💎</div>
+      </div>
+      <div class="cat-card" onclick="filterCategory('keys', this)">
+        <div class="cat-info">
+          <h3>LLAVES DE COFRES</h3>
+          <span>Clic para ver</span>
+        </div>
+        <div class="cat-icon">🗝️</div>
+      </div>
+    </div>
 
-    <footer>
-        <p>&copy; 2026 Tu Servidor de Minecraft. Todos los derechos reservados.</p>
-    </footer>
+    <!-- Products -->
+    <div class="section-bar" id="productos">Paquetes Disponibles</div>
+    <div class="products-grid" id="products-container">
+      <!-- Se cargan desde /api/products -->
+    </div>
+  </div>
 
-    <!-- SDK de PayPal se cargará dinámicamente -->
-    <script>
-        let selectedProduct = null;
-        let paypalClientId = '';
-        let currency = 'USD';
+  <!-- Login Modal (Java / Bedrock) -->
+  <div class="modal-backdrop" id="login-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModals()">✕</button>
+      <h2>Ingresa tu Usuario</h2>
+      <p>Escribe tu nombre exacto dentro del servidor para recibir tus compras al instante.</p>
 
-        async function initStore() {
-            try {
-                // Obtener configuración del backend
-                const configRes = await fetch('/api/config');
-                const config = await configRes.json();
-                paypalClientId = config.clientId;
-                currency = config.currency || 'USD';
+      <div class="edition-tabs">
+        <button class="tab-btn active" id="tab-java" onclick="setEdition('java')">Java Edition</button>
+        <button class="tab-btn" id="tab-bedrock" onclick="setEdition('bedrock')">Bedrock Edition</button>
+      </div>
 
-                // Cargar productos
-                const prodRes = await fetch('/api/products');
-                const products = await prodRes.json();
+      <div class="input-group">
+        <input type="text" id="nick-input" placeholder="Ej. Notch" maxlength="16" />
+        <button class="btn btn-green" onclick="saveNick()">Guardar</button>
+      </div>
+    </div>
+  </div>
 
-                const container = document.getElementById('products-container');
-                container.innerHTML = '';
+  <!-- Checkout / Details Modal -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModals()">✕</button>
+      <h2 id="modal-prod-title">Tu Compra</h2>
+      <p id="modal-prod-desc">Selecciona un paquete para continuar con el pago.</p>
 
-                products.forEach(product => {
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.innerHTML = `
-                        <div>
-                            <h3>${product.name}</h3>
-                            <p>${product.description}</p>
-                        </div>
-                        <div class="product-footer">
-                            <span class="price">$${product.price.toFixed(2)} ${currency}</span>
-                            <button class="buy-btn" onclick="selectProduct('${product.id}')">Seleccionar</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
+      <div style="background: var(--bg-main); border: 1px solid var(--border); padding: 14px; border-radius: 8px; margin-bottom: 18px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <small style="color: var(--text-muted); display: block;">Jugador:</small>
+          <strong id="checkout-nick" style="color: var(--green);">No definido</strong>
+        </div>
+        <div style="text-align: right;">
+          <small style="color: var(--text-muted); display: block;">Total a pagar:</small>
+          <strong id="checkout-price" style="font-size: 1.15rem;">$0.00</strong>
+        </div>
+      </div>
 
-                // Cargar script de PayPal dinámicamente
-                const script = document.createElement('script');
-                script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency}`;
-                script.onload = renderPayPalButton;
-                document.head.appendChild(script);
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
 
-            } catch (err) {
-                console.error('Error al inicializar la tienda:', err);
-            }
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Juega Ahora</h4>
+          <p>Comienza tu aventura hoy mismo. Únete a nuestra comunidad usando nuestra dirección IP oficial.</p>
+          <button class="btn btn-blue" onclick="copyIP()">📋 play.tuservidor.net</button>
+        </div>
+        <div class="footer-col">
+          <h4>Servidor de Discord</h4>
+          <p>Entérate de eventos, sorteos, actualizaciones y recibe soporte directo de nuestro equipo.</p>
+          <a href="#" class="btn btn-green" style="text-decoration: none;">💬 Unirse a Discord</a>
+        </div>
+        <div class="footer-col">
+          <h4>Pagos Seguros</h4>
+          <p>Todas las compras se procesan de forma automática y segura mediante PayPal en segundos.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Mi Servidor MC. Todos los derechos reservados.</span>
+        <span>No estamos afiliados con Mojang AB ni Microsoft.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">¡IP copiada al portapapeles!</div>
+
+  <script>
+    let allProducts = [];
+    let selectedProduct = null;
+    let playerNick = localStorage.getItem('mc_nick') || '';
+    let edition = 'java';
+    let currency = 'USD';
+
+    const ICONS = ['👑', '💎', '🗝️', '⚔️', '🛡️', '🎁'];
+
+    // Inicializar tienda
+    async function init() {
+      updateUserUI();
+      startCountdown();
+
+      try {
+        const cfgRes = await fetch('/api/config');
+        const cfg = await cfgRes.json();
+        currency = cfg.currency || 'USD';
+
+        const prodRes = await fetch('/api/products');
+        allProducts = await prodRes.json();
+        renderProducts(allProducts);
+
+        // Cargar SDK de PayPal
+        const script = document.createElement('script');
+        script.src = `https://www.paypal.com/sdk/js?client-id=${cfg.clientId}&currency=${currency}`;
+        script.onload = setupPayPal;
+        document.head.appendChild(script);
+      } catch (e) {
+        console.error('Error cargando tienda:', e);
+      }
+    }
+
+    function renderProducts(list) {
+      const container = document.getElementById('products-container');
+      container.innerHTML = '';
+
+      if (!list.length) {
+        container.innerHTML = '<p style="color: var(--text-muted);">No hay productos disponibles en esta categoría.</p>';
+        return;
+      }
+
+      list.forEach((p, idx) => {
+        const icon = ICONS[idx % ICONS.length];
+        const card = document.createElement('div');
+        card.className = 'prod-card';
+        card.innerHTML = `
+          <div>
+            <div class="prod-header">
+              <div class="prod-img">${icon}</div>
+              <div>
+                <div class="prod-title">${p.name}</div>
+                <div class="prod-price">$${Number(p.price).toFixed(2)} ${currency}</div>
+              </div>
+            </div>
+            <p class="prod-desc">${p.description}</p>
+          </div>
+          <div class="prod-actions">
+            <button class="btn btn-green" onclick="selectAndBuy('${p.id}')">Comprar</button>
+            <button class="btn btn-blue" onclick="selectAndBuy('${p.id}')">Detalles</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat, el) {
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+
+      if (cat === 'all') return renderProducts(allProducts);
+      const filtered = allProducts.filter(p =>
+        p.id.toLowerCase().includes(cat) || p.name.toLowerCase().includes(cat)
+      );
+      renderProducts(filtered.length ? filtered : allProducts);
+    }
+
+    function setEdition(type) {
+      edition = type;
+      document.getElementById('tab-java').classList.toggle('active', type === 'java');
+      document.getElementById('tab-bedrock').classList.toggle('active', type === 'bedrock');
+      document.getElementById('nick-input').placeholder = type === 'bedrock' ? 'Ej. .JugadorBedrock' : 'Ej. Notch';
+    }
+
+    function openLoginModal() {
+      document.getElementById('nick-input').value = playerNick;
+      document.getElementById('login-modal').classList.add('open');
+    }
+
+    function saveNick() {
+      let val = document.getElementById('nick-input').value.trim();
+      if (!val || val.length < 3) {
+        alert('Ingresa un nombre válido (mínimo 3 caracteres).');
+        return;
+      }
+      if (edition === 'bedrock' && !val.startsWith('.')) {
+        val = '.' + val;
+      }
+      playerNick = val;
+      localStorage.setItem('mc_nick', playerNick);
+      updateUserUI();
+      closeModals();
+      showToast(`Conectado como ${playerNick}`);
+    }
+
+    function updateUserUI() {
+      const btn = document.getElementById('login-trigger');
+      btn.textContent = playerNick ? `👤 ${playerNick}` : '👤 Iniciar Sesión';
+      document.getElementById('checkout-nick').textContent = playerNick || 'No definido';
+    }
+
+    function selectAndBuy(productId) {
+      selectedProduct = allProducts.find(p => p.id === productId);
+      if (!selectedProduct) return;
+
+      document.getElementById('cart-label').textContent = `1 ítem ($${Number(selectedProduct.price).toFixed(2)})`;
+
+      if (!playerNick) {
+        openLoginModal();
+        return;
+      }
+      openCheckoutModal();
+    }
+
+    function openCheckoutModal() {
+      if (!selectedProduct) {
+        showToast('Selecciona un producto primero');
+        return;
+      }
+      if (!playerNick) {
+        openLoginModal();
+        return;
+      }
+      document.getElementById('modal-prod-title').textContent = selectedProduct.name;
+      document.getElementById('modal-prod-desc').textContent = selectedProduct.description;
+      document.getElementById('checkout-nick').textContent = playerNick;
+      document.getElementById('checkout-price').textContent = `$${Number(selectedProduct.price).toFixed(2)} ${currency}`;
+      document.getElementById('checkout-modal').classList.add('open');
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+    }
+
+    function setupPayPal() {
+      if (!window.paypal) return;
+      paypal.Buttons({
+        createOrder: async () => {
+          const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId: selectedProduct.id, nick: playerNick })
+          });
+          const data = await res.json();
+          if (data.error) {
+            alert(data.error);
+            throw new Error(data.error);
+          }
+          return data.id;
+        },
+        onApprove: async (data) => {
+          const res = await fetch(`/api/orders/${data.orderID}/capture`, { method: 'POST' });
+          const result = await res.json();
+          if (result.status === 'COMPLETED') {
+            closeModals();
+            showToast('¡Compra exitosa! Entregando en el servidor...');
+            selectedProduct = null;
+            document.getElementById('cart-label').textContent = 'Vacío';
+          } else {
+            alert('Hubo un problema al confirmar el pago.');
+          }
         }
+      }).render('#paypal-button-container');
+    }
 
-        function selectProduct(productId) {
-            const nick = document.getElementById('minecraft-nick').value.trim();
-            if (!nick || nick.length < 3) {
-                alert('Por favor, escribe un nick válido de Minecraft (entre 3 y 16 caracteres) antes de seleccionar un producto.');
-                return;
-            }
-            selectedProduct = productId;
-            alert(`Has seleccionado el producto. Ahora baja a la sección de pago de PayPal para completar tu compra para el usuario: ${nick}`);
-        }
+    function copyIP() {
+      navigator.clipboard.writeText('play.tuservidor.net');
+      showToast('¡IP copiada al portapapeles!');
+    }
 
-        function renderPayPalButton() {
-            paypal.Buttons({
-                createOrder: async function(data, actions) {
-                    const nick = document.getElementById('minecraft-nick').value.trim();
-                    if (!nick || !selectedProduct) {
-                        alert('Asegúrate de escribir tu nick y seleccionar un producto.');
-                        throw new Error('Datos incompletos');
-                    }
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
 
-                    const res = await fetch('/api/orders', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ productId: selectedProduct, nick: nick })
-                    });
-                    const order = await res.json();
-                    if (order.error) {
-                        alert(order.error);
-                        throw new Error(order.error);
-                    }
-                    return order.id;
-                },
-                onApprove: async function(data, actions) {
-                    const res = await fetch(`/api/orders/${data.orderID}/capture`, {
-                        method: 'POST'
-                    });
-                    const result = await res.json();
-                    if (result.status === 'COMPLETED') {
-                        alert('¡Pago completado con éxito! Tus ítems o rango llegarán al servidor en unos segundos.');
-                        window.location.reload();
-                    } else {
-                        alert('El pago no pudo ser procesado.');
-                    }
-                }
-            }).render('#paypal-button-container');
-        }
+    function startCountdown() {
+      let total = (3 * 86400) + (10 * 3600) + (25 * 60) + 40;
+      setInterval(() => {
+        if (total <= 0) return;
+        total--;
+        const d = Math.floor(total / 86400);
+        const h = Math.floor((total % 86400) / 3600);
+        const m = Math.floor((total % 3600) / 60);
+        const s = total % 60;
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+      }, 1000);
+    }
 
-        initStore();
-    </script>
+    init();
+  </script>
 </body>
 </html>
