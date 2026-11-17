@@ -1,35 +1,282 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NEON STORE</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Oficial | Servidor Minecraft</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--accent);
+        }
+
+        header p {
+            margin: 5px 0 0 0;
+            color: var(--text-muted);
+        }
+
+        main {
+            max-width: 1000px;
+            width: 100%;
+            margin: 30px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        .nick-container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nick-container label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .nick-container input {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            background-color: #0f172a;
+            color: white;
+            width: 250px;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .product-card h3 {
+            margin-top: 0;
+            color: var(--text-main);
+        }
+
+        .product-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .buy-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .buy-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Modal / Checkout Container */
+        #paypal-container {
+            margin-top: 20px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
 </head>
 <body>
-  <header><h1>NEON<span>STORE</span></h1><p>Tienda oficial del servidor</p></header>
 
-  <main>
-    <section class="nick-box">
-      <label for="nick">1. Tu nick en el juego</label>
-      <input id="nick" maxlength="16" placeholder="Ej: Steve_123" autocomplete="off">
-      <small id="nick-help">3-16 caracteres: letras, números y _</small>
-    </section>
+    <header>
+        <h1>Tienda del Servidor</h1>
+        <p>¡Apoya al servidor y adquiere rangos o beneficios exclusivos!</p>
+    </header>
 
-    <section>
-      <h2>2. Elige tu producto</h2>
-      <div id="products" class="grid"></div>
-    </section>
+    <main>
+        <div class="nick-container">
+            <label for="minecraft-nick">Ingresa tu nombre de usuario (Nick) en Minecraft:</label>
+            <input type="text" id="minecraft-nick" placeholder="Ej. Notch" autocomplete="off" />
+        </div>
 
-    <section id="checkout" hidden>
-      <h2>3. Paga</h2>
-      <p id="summary"></p>
-      <div id="paypal-buttons"></div>
-    </section>
+        <div id="products-container" class="products-grid">
+            <!-- Los productos se cargarán dinámicamente aquí -->
+        </div>
 
-    <p id="status" role="status"></p>
-  </main>
+        <div id="checkout-section" style="margin-top: 40px; text-align: center;">
+            <div id="paypal-button-container"></div>
+        </div>
+    </main>
 
-  <script src="app.js"></script>
+    <footer>
+        <p>&copy; 2026 Tu Servidor de Minecraft. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- SDK de PayPal se cargará dinámicamente -->
+    <script>
+        let selectedProduct = null;
+        let paypalClientId = '';
+        let currency = 'USD';
+
+        async function initStore() {
+            try {
+                // Obtener configuración del backend
+                const configRes = await fetch('/api/config');
+                const config = await configRes.json();
+                paypalClientId = config.clientId;
+                currency = config.currency || 'USD';
+
+                // Cargar productos
+                const prodRes = await fetch('/api/products');
+                const products = await prodRes.json();
+
+                const container = document.getElementById('products-container');
+                container.innerHTML = '';
+
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <div>
+                            <h3>${product.name}</h3>
+                            <p>${product.description}</p>
+                        </div>
+                        <div class="product-footer">
+                            <span class="price">$${product.price.toFixed(2)} ${currency}</span>
+                            <button class="buy-btn" onclick="selectProduct('${product.id}')">Seleccionar</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                // Cargar script de PayPal dinámicamente
+                const script = document.createElement('script');
+                script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency}`;
+                script.onload = renderPayPalButton;
+                document.head.appendChild(script);
+
+            } catch (err) {
+                console.error('Error al inicializar la tienda:', err);
+            }
+        }
+
+        function selectProduct(productId) {
+            const nick = document.getElementById('minecraft-nick').value.trim();
+            if (!nick || nick.length < 3) {
+                alert('Por favor, escribe un nick válido de Minecraft (entre 3 y 16 caracteres) antes de seleccionar un producto.');
+                return;
+            }
+            selectedProduct = productId;
+            alert(`Has seleccionado el producto. Ahora baja a la sección de pago de PayPal para completar tu compra para el usuario: ${nick}`);
+        }
+
+        function renderPayPalButton() {
+            paypal.Buttons({
+                createOrder: async function(data, actions) {
+                    const nick = document.getElementById('minecraft-nick').value.trim();
+                    if (!nick || !selectedProduct) {
+                        alert('Asegúrate de escribir tu nick y seleccionar un producto.');
+                        throw new Error('Datos incompletos');
+                    }
+
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ productId: selectedProduct, nick: nick })
+                    });
+                    const order = await res.json();
+                    if (order.error) {
+                        alert(order.error);
+                        throw new Error(order.error);
+                    }
+                    return order.id;
+                },
+                onApprove: async function(data, actions) {
+                    const res = await fetch(`/api/orders/${data.orderID}/capture`, {
+                        method: 'POST'
+                    });
+                    const result = await res.json();
+                    if (result.status === 'COMPLETED') {
+                        alert('¡Pago completado con éxito! Tus ítems o rango llegarán al servidor en unos segundos.');
+                        window.location.reload();
+                    } else {
+                        alert('El pago no pudo ser procesado.');
+                    }
+                }
+            }).render('#paypal-button-container');
+        }
+
+        initStore();
+    </script>
 </body>
 </html>
