@@ -11,6 +11,8 @@
       --bg-card: #1c1813;
       --gold: #f59e0b;
       --gold-hover: #d97706;
+      --purple-accent: #3b2b52;
+      --purple-border: #5b4280;
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --border: #2c251d;
@@ -113,7 +115,7 @@
     /* ── Layout Principal (Sidebar + Content) ── */
     .main-layout {
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 280px 1fr;
       gap: 24px;
       margin-bottom: 40px;
     }
@@ -121,7 +123,33 @@
       .main-layout { grid-template-columns: 1fr; }
     }
 
-    /* Sidebar */
+    /* Sidebar Modificada estilo referencia */
+    .sidebar-box {
+      background: linear-gradient(135deg, #231934 0%, #14110e 100%);
+      border: 1px solid var(--purple-border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .sidebar-box:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+    }
+    .sidebar-box-icon {
+      font-size: 1.8rem;
+      background: rgba(245, 158, 11, 0.15);
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--gold);
+    }
+    .sidebar-box-text small { color: var(--gold); font-weight: 700; font-size: 0.7rem; text-transform: uppercase; display: block; }
+    .sidebar-box-text span { font-weight: 800; font-size: 0.95srem; color: var(--text); }
+
     .sidebar-title {
       font-size: 0.8rem;
       font-weight: 800;
@@ -136,7 +164,7 @@
       border: 1px solid var(--border);
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
     .cat-item {
       padding: 14px 18px;
@@ -151,6 +179,55 @@
     }
     .cat-item:last-child { border-bottom: none; }
     .cat-item:hover, .cat-item.active { background: rgba(245, 158, 11, 0.08); color: var(--gold); }
+
+    /* Módulos Extra Sidebar (Giftcard & Recent Payments) */
+    .side-module {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .side-module h4 {
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .side-input-group {
+      display: flex;
+      gap: 6px;
+    }
+    .side-input-group input {
+      flex: 1;
+      background: var(--bg-body);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .side-input-group input:focus { border-color: var(--gold); }
+
+    .donators-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .donator-avatar {
+      width: 100%;
+      aspect-ratio: 1;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
 
     /* Content Area */
     .content-panel {
@@ -269,7 +346,6 @@
   <div class="container">
     <!-- Hero / Logo & Acciones Rápidas -->
     <div class="hero-section">
-      <!-- Logotipo oficial con tu imagen subida -->
       <img src="logo.png" alt="Energimc Network Logo" class="hero-logo" />
       
       <div class="quick-actions">
@@ -292,14 +368,43 @@
 
     <!-- Layout Principal -->
     <div class="main-layout">
-      <!-- Sidebar Categorías -->
+      <!-- Sidebar Estilo Referencia (Selector superior + Categorías + Módulos) -->
       <div>
-        <div class="sidebar-title">Selecciona una Categoría</div>
+        <!-- Caja Estilo Referencia (Segunda Imagen) -->
+        <div class="sidebar-box" onclick="document.getElementById('productos').scrollIntoView({behavior: 'smooth'})">
+          <div class="sidebar-box-icon">🛒</div>
+          <div class="sidebar-box-text">
+            <small>Click aquí para</small>
+            <span>Seleccionar categoría</span>
+          </div>
+        </div>
+
+        <div class="sidebar-title">Categorías</div>
         <div class="cat-list" id="categories-container">
           <div class="cat-item active" onclick="filterCategory('all', this)">⚡ Todos los ítems</div>
           <div class="cat-item" onclick="filterCategory('rank', this)">👑 Rangos VIP</div>
           <div class="cat-item" onclick="filterCategory('gems', this)">💎 Gemas y Monedas</div>
           <div class="cat-item" onclick="filterCategory('keys', this)">🗝️ Llaves de Cofres</div>
+        </div>
+
+        <!-- Módulo Giftcard Balance -->
+        <div class="side-module">
+          <h4>Giftcard Balance</h4>
+          <div class="side-input-group">
+            <input type="text" placeholder="Card Number" id="gift-card-input" />
+            <button class="btn" onclick="checkGiftcard()">Check</button>
+          </div>
+        </div>
+
+        <!-- Módulo Recent Payments -->
+        <div class="side-module">
+          <h4>Recent Payments</h4>
+          <div class="donators-grid">
+            <div class="donator-avatar">👦</div>
+            <div class="donator-avatar">🧑</div>
+            <div class="donator-avatar">🦊</div>
+            <div class="donator-avatar">🤖</div>
+          </div>
         </div>
       </div>
 
@@ -323,7 +428,7 @@
         </div>
 
         <!-- Cuadrícula de Productos Dinámicos -->
-        <div class="content-panel">
+        <div class="content-panel" id="productos">
           <h2>PRODUCTOS DISPONIBLES</h2>
           <div class="products-grid" id="products-container">
             <!-- Cargados automáticamente desde /api/products -->
@@ -384,7 +489,6 @@
         allProducts = await prodRes.json();
         renderProducts(allProducts);
 
-        // Cargar script de PayPal dinámicamente
         const script = document.createElement('script');
         script.src = `https://www.paypal.com/sdk/js?client-id=${cfg.clientId}&currency=${currency}`;
         script.onload = setupPayPal;
@@ -502,6 +606,15 @@
     function copyIP() {
       navigator.clipboard.writeText('Energimc.lat');
       showToast('¡IP copiada al portapapeles!');
+    }
+
+    function checkGiftcard() {
+      const code = document.getElementById('gift-card-input').value.trim();
+      if (!code) {
+        showToast('Ingresa un número de tarjeta válido');
+        return;
+      }
+      showToast('Código de tarjeta no válido o expirado');
     }
 
     function showToast(msg) {
