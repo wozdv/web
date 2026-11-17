@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Energimc Network - Tienda Oficial</title>
+  <style>
+    :root {
+      --bg-body: #0d0b09;
+      --bg-panel: #14110e;
+      --bg-card: #1c1813;
+      --gold: #f59e0b;
+      --gold-hover: #d97706;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --border: #2c251d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: #080705;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 15px;
+      font-size: 0.85rem;
+    }
+    .user-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 6px;
+      color: var(--gold);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s;
+    }
+    .user-pill:hover { border-color: var(--gold); }
+
+    /* ── Hero & Banner ── */
+    .hero-section {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+    .hero-logo {
+      max-width: 190px;
+      height: auto;
+      margin-bottom: 15px;
+      filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.4));
+      transition: transform 0.2s;
+    }
+    .hero-logo:hover { transform: scale(1.03); }
+
+    .quick-actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .action-badge {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .action-badge:hover { border-color: var(--gold); }
+    .action-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(245, 158, 11, 0.15);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      font-weight: bold;
+    }
+    .action-text small { color: var(--gold); display: block; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; }
+    .action-text span { font-weight: 800; font-size: 0.9rem; }
+
+    /* ── Layout Principal (Sidebar + Content) ── */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 850px) {
+      .main-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Sidebar */
+    .sidebar-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .cat-list {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .cat-item {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .cat-item:last-child { border-bottom: none; }
+    .cat-item:hover, .cat-item.active { background: rgba(245, 158, 11, 0.08); color: var(--gold); }
+
+    /* Content Area */
+    .content-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .content-panel h2 {
+      font-size: 1.1rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .content-panel p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    /* Meta mensual bar */
+    .goal-header { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 6px; }
+    .goal-bar { background: var(--bg-body); border-radius: 6px; height: 10px; overflow: hidden; border: 1px solid var(--border); }
+    .goal-fill { background: var(--gold); width: 0%; height: 100%; transition: width 0.4s; }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .prod-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .prod-card:hover { transform: translateY(-2px); border-color: var(--gold); }
+    .prod-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+    .prod-desc { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 14px; line-height: 1.4; }
+    .prod-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 12px; }
+    .prod-price { color: var(--gold); font-weight: 800; font-size: 0.95rem; }
+
+    .btn {
+      background: var(--gold);
+      color: #1c1813;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: var(--gold-hover); }
+
+    /* ── Modales ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--bg-panel); border: 1px solid var(--border);
+      border-radius: 12px; max-width: 440px; width: 100%; padding: 24px; position: relative;
+    }
+    .modal h3 { color: var(--gold); margin-bottom: 8px; }
+    .modal p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+    .modal input {
+      width: 100%; background: var(--bg-body); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 14px; color: var(--text); font-size: 0.95rem; margin-bottom: 14px; outline: none;
+    }
+    .modal input:focus { border-color: var(--gold); }
+    .modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+
+    /* ── Footer ── */
+    footer {
+      background: #080705;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+      padding: 24px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--gold); color: #1c1813; font-weight: 800; padding: 10px 20px;
+      border-radius: 6px; transition: transform 0.3s ease; z-index: 200;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Usuario -->
+  <div class="topbar">
+    <div class="user-pill" onclick="openLoginModal()">
+      👤 <span id="user-display">Invitado (Haz clic para iniciar sesión)</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Hero / Logo & Acciones Rápidas -->
+    <div class="hero-section">
+      <!-- Logotipo oficial con tu imagen subida -->
+      <img src="logo.png" alt="Energimc Network Logo" class="hero-logo" />
+      
+      <div class="quick-actions">
+        <div class="action-badge" onclick="copyIP()">
+          <div class="action-icon">▶</div>
+          <div class="action-text">
+            <small>Energimc.lat</small>
+            <span>Haz clic para copiar IP</span>
+          </div>
+        </div>
+        <a href="https://discord.gg/tuenlace" target="_blank" class="action-badge">
+          <div class="action-icon">💬</div>
+          <div class="action-text">
+            <small>Servidor de Discord</small>
+            <span>Haz clic para unirte</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Layout Principal -->
+    <div class="main-layout">
+      <!-- Sidebar Categorías -->
+      <div>
+        <div class="sidebar-title">Selecciona una Categoría</div>
+        <div class="cat-list" id="categories-container">
+          <div class="cat-item active" onclick="filterCategory('all', this)">⚡ Todos los ítems</div>
+          <div class="cat-item" onclick="filterCategory('rank', this)">👑 Rangos VIP</div>
+          <div class="cat-item" onclick="filterCategory('gems', this)">💎 Gemas y Monedas</div>
+          <div class="cat-item" onclick="filterCategory('keys', this)">🗝️ Llaves de Cofres</div>
+        </div>
+      </div>
+
+      <!-- Contenido de Bienvenida y Productos -->
+      <div>
+        <div class="content-panel">
+          <div class="goal-header">
+            <span>META MENSUAL</span>
+            <span style="color: var(--gold);">0%</span>
+          </div>
+          <div class="goal-bar"><div class="goal-fill" style="width: 0%;"></div></div>
+        </div>
+
+        <div class="content-panel">
+          <h2>BIENVENIDO(A) AL SERVIDOR OFICIAL</h2>
+          <h2 style="font-size: 1.3rem; margin-bottom: 12px;">ENERGIMC NETWORK TIENDA</h2>
+          <p>Sé bienvenido a la Tienda Oficial de Energimc Network. Aquí encontrarás rangos, upgrades y utilidades las cuales te ayudarán a avanzar, competir y destacar dentro del servidor.</p>
+          
+          <h2 style="font-size: 0.95rem; margin-top: 16px;">¿ERES UN PADRE O TUTOR?</h2>
+          <p>En Energimc Network tenemos un compromiso con la seguridad y bienestar de nuestros jugadores... Si necesita comunicarse con nosotros puede hacerlo mediante nuestro Discord Oficial o correo electrónico.</p>
+        </div>
+
+        <!-- Cuadrícula de Productos Dinámicos -->
+        <div class="content-panel">
+          <h2>PRODUCTOS DISPONIBLES</h2>
+          <div class="products-grid" id="products-container">
+            <!-- Cargados automáticamente desde /api/products -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Login Nick -->
+  <div class="modal-backdrop" id="login-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3>Ingresa tu Nick de Minecraft</h3>
+      <p>Introduce tu nombre de usuario exacto para que el servidor te entregue los ítems automáticamente al pagar.</p>
+      <input type="text" id="nick-input" placeholder="Ej. Notch" maxlength="16" />
+      <button class="btn" style="width: 100%; padding: 12px;" onclick="saveNick()">Guardar Usuario</button>
+    </div>
+  </div>
+
+  <!-- Modal Checkout / Pago PayPal -->
+  <div class="modal-backdrop" id="checkout-modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <h3 id="modal-prod-title">Comprar Producto</h3>
+      <p id="modal-prod-desc">Estás a un paso de completar tu adquisición.</p>
+      <div style="background: var(--bg-body); padding: 12px; border-radius: 6px; margin-bottom: 16px; font-size: 0.9rem;">
+        <div>Jugador: <strong id="checkout-nick" style="color: var(--gold);">---</strong></div>
+        <div>Total: <strong id="checkout-price" style="color: var(--gold);">---</strong></div>
+      </div>
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Copyright © 2026 Energimc Network. Todos los derechos reservados.<br>
+      No estamos afiliados con Mojang AB ni Microsoft.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">¡IP copiada al portapapeles!</div>
+
+  <script>
+    let allProducts = [];
+    let selectedProduct = null;
+    let playerNick = localStorage.getItem('mc_nick') || '';
+    let currency = 'USD';
+
+    async function initStore() {
+      updateUserUI();
+      try {
+        const cfgRes = await fetch('/api/config');
+        const cfg = await cfgRes.json();
+        currency = cfg.currency || 'USD';
+
+        const prodRes = await fetch('/api/products');
+        allProducts = await prodRes.json();
+        renderProducts(allProducts);
+
+        // Cargar script de PayPal dinámicamente
+        const script = document.createElement('script');
+        script.src = `https://www.paypal.com/sdk/js?client-id=${cfg.clientId}&currency=${currency}`;
+        script.onload = setupPayPal;
+        document.head.appendChild(script);
+      } catch (e) {
+        console.error('Error al inicializar tienda:', e);
+      }
+    }
+
+    function renderProducts(list) {
+      const container = document.getElementById('products-container');
+      container.innerHTML = '';
+      if (!list.length) {
+        container.innerHTML = '<p style="color: var(--text-muted);">No hay productos en esta categoría.</p>';
+        return;
+      }
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'prod-card';
+        card.innerHTML = `
+          <div>
+            <div class="prod-title">${p.name}</div>
+            <div class="prod-desc">${p.description}</div>
+          </div>
+          <div class="prod-footer">
+            <span class="prod-price">$${Number(p.price).toFixed(2)} ${currency}</span>
+            <button class="btn" onclick="startCheckout('${p.id}')">Comprar</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat, el) {
+      document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      if (cat === 'all') return renderProducts(allProducts);
+      const filtered = allProducts.filter(p => p.id.toLowerCase().includes(cat) || p.name.toLowerCase().includes(cat));
+      renderProducts(filtered.length ? filtered : allProducts);
+    }
+
+    function openLoginModal() {
+      document.getElementById('nick-input').value = playerNick;
+      document.getElementById('login-modal').classList.add('open');
+    }
+
+    function saveNick() {
+      const val = document.getElementById('nick-input').value.trim();
+      if (!val || val.length < 3) {
+        alert('Ingresa un nick válido (mínimo 3 caracteres).');
+        return;
+      }
+      playerNick = val;
+      localStorage.setItem('mc_nick', playerNick);
+      updateUserUI();
+      closeModal();
+      showToast(`¡Conectado como ${playerNick}!`);
+    }
+
+    function updateUserUI() {
+      const display = document.getElementById('user-display');
+      display.textContent = playerNick ? playerNick : 'Invitado (Haz clic para iniciar sesión)';
+    }
+
+    function startCheckout(productId) {
+      selectedProduct = allProducts.find(p => p.id === productId);
+      if (!selectedProduct) return;
+
+      if (!playerNick) {
+        openLoginModal();
+        return;
+      }
+
+      document.getElementById('modal-prod-title').textContent = selectedProduct.name;
+      document.getElementById('modal-prod-desc').textContent = selectedProduct.description;
+      document.getElementById('checkout-nick').textContent = playerNick;
+      document.getElementById('checkout-price').textContent = `$${Number(selectedProduct.price).toFixed(2)} ${currency}`;
+      document.getElementById('checkout-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('open'));
+    }
+
+    function setupPayPal() {
+      if (!window.paypal) return;
+      paypal.Buttons({
+        createOrder: async () => {
+          const res = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId: selectedProduct.id, nick: playerNick })
+          });
+          const data = await res.json();
+          if (data.error) {
+            alert(data.error);
+            throw new Error(data.error);
+          }
+          return data.id;
+        },
+        onApprove: async (data) => {
+          const res = await fetch(`/api/orders/${data.orderID}/capture`, { method: 'POST' });
+          const result = await res.json();
+          if (result.status === 'COMPLETED') {
+            closeModal();
+            showToast('¡Pago exitoso! Entregando ítems...');
+            selectedProduct = null;
+          } else {
+            alert('No se pudo confirmar el pago.');
+          }
+        }
+      }).render('#paypal-button-container');
+    }
+
+    function copyIP() {
+      navigator.clipboard.writeText('Energimc.lat');
+      showToast('¡IP copiada al portapapeles!');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    initStore();
+  </script>
+</body>
+</html>
