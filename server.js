@@ -187,7 +187,7 @@ app.post('/api/orders/:orderId/capture', async (req, res) => {
 });
 
 // Webhook de PayPal
-app.post('/webhook/paypal', async (req, res) => {
+app.post('/webhook', async (req, res) => {
   try {
     if (!(await verifyWebhook(req))) {
       console.warn('⚠️ Webhook con firma inválida');
